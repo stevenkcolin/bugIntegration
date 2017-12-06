@@ -1,0 +1,19 @@
+spring:
+  http:
+    multipart:
+      max-file-size: 20Mb
+      max-request-size: 20Mb
+  messages:
+    basename: i18n/messages
+  #针对多种环境配置
+  profiles:
+    active: @env@
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  jackson:
+    serialization:
+      indent_output: false

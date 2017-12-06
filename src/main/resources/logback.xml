@@ -1,0 +1,44 @@
+<configuration>
+    <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,,,, -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %p (%file:%line\)- %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="applog" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>batch</key>
+            <defaultValue>main</defaultValue>
+        </discriminator>
+        <sift>
+            <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <File>/app/logs/app-${batch}.log</File>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>/app/logs/app-${batch}.log.%d.%i</fileNamePattern>
+                    <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <!-- or whenever FileControllerfile size reaches 64 MB -->
+                        <maxFileSize>10 MB</maxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>
+                        %d %p (%file:%line\)- %m%n
+                    </pattern>
+                    <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+    <root level="WARN">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="applog" />
+    </root>
+    <!--<logger name="org.hibernate.SQL" level="trace" />-->
+    <!--<logger name="org.hibernate.type.descriptor.sql" level="trace" />-->
+
+    <logger name="com.aethercoder" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="applog" />
+    </logger>
+</configuration>
